@@ -31,10 +31,14 @@ npx ts-node RecipeTest.ts
 
 - host api on render
 - provide api endpoint
-- provide demo site
+- provide demo site - link demo repo in this readme
 - access testing process - best practice
 - update usage docs
 - add some better error messages
 
-- create recipe index app using this API (down the track)
+## Problems solved
+
+I often find myself browsing recipe websites to cook something new, but struggle to find those recipes again later. This API extracts structured recipe data from any recipe webpage, enabling the creation of a recipe index app that saves essential recipe information in one centralized place for easy access and organization.
+
+'Recipe Index' - soon available for download!
 
