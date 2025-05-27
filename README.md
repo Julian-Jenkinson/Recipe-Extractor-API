@@ -3,6 +3,7 @@
 A REST API that extracts recipe details (title, ingredients, instructions, images) from any recipe webpage URL and returns the data in JSON format.
 
 
+
 ## Features 💥
 
 - Supports JSON-LD and Microdata schema.org formats
@@ -14,11 +15,13 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 - Supported for both GET and POST methods
 
 
+
 ## Technology ✨ 
 
 **Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
 
 **Ops** - Fly.io, Docker
+
 
 
 ## Usage 💫
@@ -69,8 +72,10 @@ Response:
 ```
 
 
+
 ## Error Messages ⁉️
 TBU
+
 
 
 ## Local development 🧑‍🏭
@@ -83,10 +88,12 @@ fly logs            # View logs (past 24 hours only)
 ```
 
 
+
 ## Testing ⭐
 
  - TBU
  
+
 
 ## Improvments 🤔 
 
@@ -95,6 +102,7 @@ fly logs            # View logs (past 24 hours only)
 - Add rate limiting / API key if it goes public
 - Return structured error codes/messages - add some better error messages
   
+
 
 ## Problems solved 🎯
 
