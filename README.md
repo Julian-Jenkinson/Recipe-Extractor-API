@@ -2,6 +2,7 @@
 
 A REST API that extracts recipe details (title, ingredients, instructions, images) from any recipe webpage URL and returns the data in JSON format.
 
+
 ## Features 💥
 
 - Supports JSON-LD and Microdata schema.org formats
@@ -12,6 +13,7 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 - Supported for both GET and POST methods
 
+
 ## Technology ✨ 
 
 **Frontend** - N/A
@@ -19,6 +21,7 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 **Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
 
 **Ops** - Fly.io, Docker
+
 
 ## API Endpoints 💫
 
@@ -60,18 +63,19 @@ Responce:
 Quick Borwser test:
 https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala
 
+
 ## Error Messages
+TBU
+
 
 ## Local development
 
-npm run build - convert to js
-
-npm start - start local server
-
-npm run deploy - deploy build to fly
-
-fly logs - view logs (past 24 hours only)
-
+```
+npm run build       # convert to js
+npm start           # start local server
+npm run deploy      # deploy build to fly
+fly logs            # view logs (past 24 hours only)
+```
 ## Testing
 
  - TBU
@@ -84,15 +88,12 @@ fly logs - view logs (past 24 hours only)
 - update usage docs
 - add some better error messages
 - add openAPI docs
-
-
-Add rate limiting / API key if it goes public
-
-Return structured error codes/messages
+- Add rate limiting / API key if it goes public
+- Return structured error codes/messages
 
 ## Problems solved
 
-I often find myself browsing recipe websites to cook something new, but struggle to find those recipes again later. This API extracts structured recipe data from any recipe webpage, enabling the creation of a recipe index app that saves essential recipe information in one centralized place for easy access and organization.
+I often find myself browsing recipe websites to cook something new, but struggle to ever find those recipes again later. This API extracts structured recipe data from any recipe webpage, enabling the creation of a recipe index app that saves essential recipe information in one centralized place for easy access and organization.
 
-'Recipe Index' - soon available for download!
+APP: 'Recipe Index' - Coming soon!
 
