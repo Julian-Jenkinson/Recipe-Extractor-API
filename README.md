@@ -16,8 +16,6 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 ## Technology ✨ 
 
-**Frontend** - N/A
-
 **Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
 
 **Ops** - Fly.io, Docker
@@ -70,10 +68,6 @@ Response:
 }
 ```
 
-Quick Browser test:
-```
-https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala
-```
 
 ## Error Messages
 TBU
