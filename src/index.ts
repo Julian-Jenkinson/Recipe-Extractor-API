@@ -39,7 +39,11 @@ function findRecipeObject(obj: any): any | null {
   return null;
 }
 
+
+
+
 export async function extractRecipe(url: string): Promise<Recipe> {
+//export default async function extractRecipe(url: string) {
   const { data: html } = await axios.get(url, {
     headers: {
       "User-Agent":

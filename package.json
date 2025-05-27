@@ -4,10 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/api.js",
+    "start": "node server.js",
+    "deploy": "fly deploy",
     "dev": "tsup src/index.ts --watch"
   },
   "repository": {
@@ -24,10 +26,13 @@
   "dependencies": {
     "axios": "^1.9.0",
     "cheerio": "^1.0.0",
+    "express": "^5.1.0",
     "tsup": "^8.5.0"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10",
     "@types/cheerio": "^0.22.35",
+    "@types/express": "^5.0.2",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.15.21",
     "ts-node": "^10.9.2",
