@@ -10,31 +10,85 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 - Easy to integrate into other projects or use as a standalone tool
 
+- Supported for both GET and POST methods
+
 ## Technology ✨ 
+
 **Frontend** - N/A
 
-**Backend** - Node.JS, TypeScript, Axios, Cheerio
+**Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
 
-**Ops** - N/A
+**Ops** - Fly.io, Docker
 
-## Usage 💫
+## API Endpoints 💫
 
-TBU - this will change
+Extract recipe data from a URL
 
-enter a url to test
-npx ts-node dev.ts ""
+### GET /extract
 
-tests 20 example sites
-npx ts-node RecipeTest.ts
+Example:
+curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+
+Responce:
+{
+  "title": "Chicken Tikka Masala",
+  "ingredients": [...],
+  "instructions": [...],
+  "image": "https://..."
+}
+
+### POST /extract
+
+Example:
+curl -X POST https://recipe-extractor-api.fly.dev/extract \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"}'
+
+Request Body:
+{
+  "url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+}
+
+Responce:
+{
+  "title": "Chicken Tikka Masala",
+  "ingredients": [...],
+  "instructions": [...],
+  "image": "https://..."
+}
+
+Quick Borwser test:
+https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala
+
+## Error Messages
+
+## Local development
+
+npm run build - convert to js
+
+npm start - start local server
+
+npm run deploy - deploy build to fly
+
+fly logs - view logs (past 24 hours only)
+
+## Testing
+
+ - TBU
 
 ## To be completed ⭐
 
-- host api on render
 - provide api endpoint
 - provide demo site - link demo repo in this readme
-- access testing process - best practice
+- prepare testing process - best practice
 - update usage docs
 - add some better error messages
+- add openAPI docs
+
+
+Add rate limiting / API key if it goes public
+
+Return structured error codes/messages
 
 ## Problems solved
 
