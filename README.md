@@ -69,11 +69,11 @@ Response:
 ```
 
 
-## Error Messages
+## Error Messages ⁉️
 TBU
 
 
-## Local development
+## Local development 🧑‍🏭
 
 ```
 npm run build       # Convert TS to JS 
@@ -83,22 +83,20 @@ fly logs            # View logs (past 24 hours only)
 ```
 
 
-## Testing
+## Testing ⭐
 
  - TBU
  
 
-## To be completed ⭐
+## Improvments 🤔 
 
-- provide demo site - link demo repo in this readme
 - prepare testing process - best practice
-- add some better error messages
 - add openAPI docs
 - Add rate limiting / API key if it goes public
-- Return structured error codes/messages
+- Return structured error codes/messages - add some better error messages
   
 
-## Problems solved
+## Problems solved 🎯
 
 I often find myself browsing recipe websites to cook something new, but struggle to ever find those recipes again later. This API extracts structured recipe data from any recipe webpage, enabling the creation of a recipe index app that saves essential recipe information in one centralized place for easy access and organization.
 
