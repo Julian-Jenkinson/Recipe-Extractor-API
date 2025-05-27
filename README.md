@@ -23,9 +23,9 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 **Ops** - Fly.io, Docker
 
 
-## API Endpoints 💫
+## Usage 💫
 
-Extract recipe data from a URL
+Extract recipe data from a URL using the following endpoints:
 
 ### GET /extract
 
@@ -34,7 +34,7 @@ Example:
 curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
 ```
 
-Responce:
+Response:
 ```
 {
   "title": "Chicken Tikka Masala",
@@ -60,7 +60,7 @@ Request Body:
 }
 ```
 
-Responce:
+Response:
 ```
 {
   "title": "Chicken Tikka Masala",
@@ -70,7 +70,7 @@ Responce:
 }
 ```
 
-Quick Borwser test:
+Quick Browser test:
 ```
 https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala
 ```
@@ -87,9 +87,12 @@ npm start           # start local server
 npm run deploy      # deploy build to fly
 fly logs            # view logs (past 24 hours only)
 ```
+
+
 ## Testing
 
  - TBU
+ - 
 
 ## To be completed ⭐
 
@@ -101,6 +104,7 @@ fly logs            # view logs (past 24 hours only)
 - add openAPI docs
 - Add rate limiting / API key if it goes public
 - Return structured error codes/messages
+  
 
 ## Problems solved
 
