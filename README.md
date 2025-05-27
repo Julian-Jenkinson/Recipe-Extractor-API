@@ -76,24 +76,22 @@ TBU
 ## Local development
 
 ```
-npm run build       # convert to js
-npm start           # start local server
-npm run deploy      # deploy build to fly
-fly logs            # view logs (past 24 hours only)
+npm run build       # Convert TS to JS 
+npm start           # Start local server
+npm run deploy      # Deploy build to fly.io
+fly logs            # View logs (past 24 hours only)
 ```
 
 
 ## Testing
 
  - TBU
- - 
+ 
 
 ## To be completed ⭐
 
-- provide api endpoint
 - provide demo site - link demo repo in this readme
 - prepare testing process - best practice
-- update usage docs
 - add some better error messages
 - add openAPI docs
 - Add rate limiting / API key if it goes public
