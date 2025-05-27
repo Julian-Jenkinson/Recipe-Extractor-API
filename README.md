@@ -30,39 +30,50 @@ Extract recipe data from a URL
 ### GET /extract
 
 Example:
+```
 curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+```
 
 Responce:
+```
 {
   "title": "Chicken Tikka Masala",
   "ingredients": [...],
   "instructions": [...],
   "image": "https://..."
 }
+```
 
 ### POST /extract
 
 Example:
+```
 curl -X POST https://recipe-extractor-api.fly.dev/extract \
   -H "Content-Type: application/json" \
   -d '{"url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"}'
+```
 
 Request Body:
+```
 {
   "url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
 }
+```
 
 Responce:
+```
 {
   "title": "Chicken Tikka Masala",
   "ingredients": [...],
   "instructions": [...],
   "image": "https://..."
 }
+```
 
 Quick Borwser test:
+```
 https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala
-
+```
 
 ## Error Messages
 TBU
