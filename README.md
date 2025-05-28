@@ -87,21 +87,29 @@ getRecipe();
 ```
 
 
-## Error Messages ⁉️
+## Error messages
 **403 Forbidden**
+
 The server understood the request but is refusing to authorize it.
+
 _This may occur if the target website blocks the API request, often interpreting it as a bot._
 
 **404 Not Found**
+
 The requested resource could not be found.
+
 _This usually happens if the recipe URL points to a non-existent page or the content has been removed._
 
 **400 Bad Request – "Missing URL parameter"**
+
 The request is missing the required url field.
+
 _Ensure that the url is provided either as a query parameter (GET) or in the JSON body (POST)._
 
 **422 Unprocessable Entity – "No recipe data found in JSON-LD or Microdata"**
+
 The page was successfully fetched, but no structured recipe data was found in supported formats.
+
 _This may occur if the recipe is embedded in an unsupported structure or obfuscated format._
 
 
