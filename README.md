@@ -5,19 +5,14 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 ## Features 💥
 
-- Supports JSON-LD and Microdata schema.org formats
-
-- Robust fallback parsing for varied website structures
-
-- Easy to integrate into other projects or use as a standalone tool
-
-- Supported for both GET and POST methods
-
+- Supports JSON-LD and Microdata (schema.org)
+- Fallback parsing for varied website structures
+- GET and POST Support
+- Easy integration into other projects
 
 ## Technology ✨ 
 
 **Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
-
 **Ops** - Fly.io, Docker
 
 
@@ -25,50 +20,29 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 Extract recipe data from a URL using the following endpoints:
 
-### GET /extract
+GET /extract 
 
-Example:
 ```
-curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
-```
-
-Response:
-```
-{
-  "title": "Chicken Tikka Masala",
-  "ingredients": [...],
-  "instructions": [...],
-  "image": "https://..."
-}
+curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.example.com/recipe"
 ```
 
-### POST /extract
+POST /extract
 
-Example:
 ```
 curl -X POST https://recipe-extractor-api.fly.dev/extract \
   -H "Content-Type: application/json" \
-  -d '{"url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"}'
+  -d '{"url": "https://www.example.com/recipe"}'
 ```
 
 Request Body:
 ```
 {
-  "url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+  "url": "https://www.example.com/recipe"
 }
+
 ```
 
-Response:
-```
-{
-  "title": "Chicken Tikka Masala",
-  "ingredients": [...],
-  "instructions": [...],
-  "image": "https://..."
-}
-```
-
-Example usage in front end application:
+Front end example:
 ```
 async function getRecipe() {
   const response = await fetch('https://recipe-extractor-api.fly.dev/extract', {
@@ -86,32 +60,22 @@ async function getRecipe() {
 getRecipe();
 ```
 
+Sample Response:
+```
+{
+  "title": "Chicken Tikka Masala",
+  "ingredients": ["1 tbsp oil", "500g chicken", "..."],
+  "instructions": ["Heat oil in a pan", "Add chicken", "..."],
+  "image": "https://www.example.com/image.jpg"
+}
+```
 
 ## Error messages
-**403 Forbidden**
 
-The server understood the request but is refusing to authorize it.
-
-_This may occur if the target website blocks the API request, often interpreting it as a bot._
-
-**404 Not Found**
-
-The requested resource could not be found.
-
-_This usually happens if the recipe URL points to a non-existent page or the content has been removed._
-
-**400 Bad Request – "Missing URL parameter"**
-
-The request is missing the required url field.
-
-_Ensure that the url is provided either as a query parameter (GET) or in the JSON body (POST)._
-
-**422 Unprocessable Entity – "No recipe data found in JSON-LD or Microdata"**
-
-The page was successfully fetched, but no structured recipe data was found in supported formats.
-
-_This may occur if the recipe is embedded in an unsupported structure or obfuscated format._
-
+- **403 Forbidden:** The server understood the request but is refusing to authorize it.
+- **404 Not Found:** The requested resource could not be found.
+- **400 Bad Request:** The request is missing the required url field.
+- **422 Unprocessable Entity:** – No recipe data found in JSON-LD or Microdata
 
 ## Local development 🧑‍🏭
 
@@ -127,34 +91,31 @@ fly logs            # View logs (past 24 hours only)
 
  This project uses Jest for testing the recipe extraction functionality across a variety of real-world recipe websites.
 
-- ✅ 18 passed — Recipes successfully extracted with title, ingredients, instructions, and image
-- ⚠️ 1 failed due to a server-side block (403 error) — Some websites may block automated access
-- ⚠️ 1 failed due to partial data — Recipe had no detectable instructions in the structured data
+- ✅ **18 passed** — Full data extracted
+- ⚠️ **1 failed due** Server blocked request (403)
+- ⚠️ **1 failed due** Partial data (missing instructions)
 
-Running tests:
+Run tests:
 ```
 npm test
 ```
 
-Tests are located in tests/extractor.test.ts. The suite checks that each recipe has:
+Tests checks:
 
-- A non-empty title (string)
-- A non-empty list of ingredients (string[])
-- A non-empty set of instructions (string or string[])
-- An image URL (string)
+- A non-empty title
+- Ingredient array with content
+- Instructions (string or array)
+- Image URL
  
 
 ## Improvments 🤔 
-- Some websites block bots, which may cause tests to fail with 403 errors.
-- Recipe data formats can vary; normalizing these across sites is ongoing work.
-- OpenAPI docs for better collaboration
-- Consider adding rate limiting / API key
-- check jsDOM dependencie
-  
+- Handle bot blocking websites more gracfully (resolve 403 error)
+- Normalise inconsistent data formats.
+- Add OpenAPI docs
+- Add rate limiting / API key
+   
 
 ## Problems solved 🎯
 
-I often find myself browsing recipe websites to cook something new, but struggle to ever find those recipes again later. This API extracts structured recipe data from any recipe webpage, enabling the creation of a recipe index app that saves essential recipe information in one centralized place for easy access and organization.
-
-APP: 'Recipe Index' - Coming soon!
+Recipe sites make it hard to save and re-find recipes. This API helps extract and centralize recipes for easier indexing — the backbone for the upcoming Recipe Index App. Coming soon!
 
