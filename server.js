@@ -25,7 +25,7 @@ app.get("/extract", async (req, res) => {
 // POST version
 app.post("/extract", async (req, res) => {
     const { url } = req.body;
-    if (!url) return res.status(400).json({ error: "Missing 'url' in request body" });
+    if (!url) return res.status(400).json({ error: "Missing URL parameter" });
 
     try {
         const data = await extractRecipe(url);

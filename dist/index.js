@@ -1,5 +1,16 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+function normalizeImage(image) {
+    if (!image)
+        return undefined;
+    if (typeof image === "string")
+        return image;
+    if (Array.isArray(image))
+        return normalizeImage(image[0]);
+    if (typeof image === "object" && image.url)
+        return image.url;
+    return undefined;
+}
 function findRecipeObject(obj) {
     if (!obj || typeof obj !== "object")
         return null;
@@ -67,9 +78,7 @@ export async function extractRecipe(url) {
             instructions: Array.isArray(recipeData.recipeInstructions)
                 ? recipeData.recipeInstructions.map((i) => i.text || i)
                 : recipeData.recipeInstructions,
-            image: Array.isArray(recipeData.image)
-                ? recipeData.image[0]
-                : recipeData.image,
+            image: normalizeImage(recipeData.image),
         };
     }
     // Step 2: Fallback to Microdata
@@ -96,7 +105,8 @@ export async function extractRecipe(url) {
     else {
         instructions = instructionEls.map((_, el) => $(el).text().trim()).get();
     }
-    const image = microdataRecipe.find('[itemprop="image"]').first().attr("src") || undefined;
+    const rawImage = microdataRecipe.find('[itemprop="image"]').first().attr("src") || undefined;
+    const image = normalizeImage(rawImage);
     return {
         title,
         ingredients,
