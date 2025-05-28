@@ -89,7 +89,7 @@ getRecipe();
 
 ## Error messages
 
-**403 Forbidden**. 
+**403 Forbidden**.  
 The server understood the request but is refusing to authorize it.  
 _This may occur if the target website blocks the API request, often interpreting it as a bot._  
 
