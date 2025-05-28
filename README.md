@@ -25,38 +25,29 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 Extract recipe data from a URL using the following endpoints:
 
-### GET /extract
+GET /extract 
 
 ```
-curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+curl "https://recipe-extractor-api.fly.dev/extract?url=https://www.example.com/recipe"
 ```
 
-### POST /extract
+POST /extract
 
 ```
 curl -X POST https://recipe-extractor-api.fly.dev/extract \
   -H "Content-Type: application/json" \
-  -d '{"url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"}'
+  -d '{"url": "https://www.example.com/recipe"}'
 ```
 
 Request Body:
 ```
 {
-  "url": "https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+  "url": "https://www.example.com/recipe"
 }
+
 ```
 
-Sample Response:
-```
-{
-  "title": "Chicken Tikka Masala",
-  "ingredients": [...],
-  "instructions": [...],
-  "image": "https://..."
-}
-```
-
-Example usage in front end application:
+Front end example:
 ```
 async function getRecipe() {
   const response = await fetch('https://recipe-extractor-api.fly.dev/extract', {
@@ -74,17 +65,22 @@ async function getRecipe() {
 getRecipe();
 ```
 
+Sample Response:
+```
+{
+  "title": "Chicken Tikka Masala",
+  "ingredients": ["1 tbsp oil", "500g chicken", "..."],
+  "instructions": ["Heat oil in a pan", "Add chicken", "..."],
+  "image": "https://www.example.com/image.jpg"
+}
+```
 
 ## Error messages
 
-**403 Forbidden:** The server understood the request but is refusing to authorize it.  
-
-**404 Not Found:** The requested resource could not be found.  
-
-**400 Bad Request:** The request is missing the required url field.  
-
-**422 Unprocessable Entity:** – No recipe data found in JSON-LD or Microdata
-
+- **403 Forbidden:** The server understood the request but is refusing to authorize it.
+- **404 Not Found:** The requested resource could not be found.
+- **400 Bad Request:** The request is missing the required url field.
+- **422 Unprocessable Entity:** – No recipe data found in JSON-LD or Microdata
 
 ## Local development 🧑‍🏭
 
@@ -122,7 +118,6 @@ Tests are located in tests/extractor.test.ts. The suite checks that each recipe 
 - Recipe data formats can vary; normalizing these across sites is ongoing work.
 - OpenAPI docs for better collaboration
 - Consider adding rate limiting / API key
-- check jsDOM dependencie
   
 
 ## Problems solved 🎯
