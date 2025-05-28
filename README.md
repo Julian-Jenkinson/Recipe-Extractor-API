@@ -13,7 +13,6 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 ## Technology ✨ 
 
 **Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
-
 **Ops** - Fly.io, Docker
 
 
