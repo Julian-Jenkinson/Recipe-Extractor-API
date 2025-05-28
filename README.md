@@ -96,33 +96,31 @@ fly logs            # View logs (past 24 hours only)
 
  This project uses Jest for testing the recipe extraction functionality across a variety of real-world recipe websites.
 
-- ✅ 18 passed — Recipes successfully extracted with title, ingredients, instructions, and image
-- ⚠️ 1 failed due to a server-side block (403 error) — Some websites may block automated access
-- ⚠️ 1 failed due to partial data — Recipe had no detectable instructions in the structured data
+- ✅ **18 passed** — Full data extracted
+- ⚠️ **1 failed due** Server blocked request (403)
+- ⚠️ **1 failed due** Partial data (missing instructions)
 
-Running tests:
+Run tests:
 ```
 npm test
 ```
 
-Tests are located in tests/extractor.test.ts. The suite checks that each recipe has:
+Tests checks:
 
-- A non-empty title (string)
-- A non-empty list of ingredients (string[])
-- A non-empty set of instructions (string or string[])
-- An image URL (string)
+- A non-empty title
+- Ingredient array with content
+- Instructions (string or array)
+- Image URL
  
 
 ## Improvments 🤔 
-- Some websites block bots, which may cause tests to fail with 403 errors.
-- Recipe data formats can vary; normalizing these across sites is ongoing work.
-- OpenAPI docs for better collaboration
-- Consider adding rate limiting / API key
-  
+- Handle bot blocking websites more gracfully (resolve 403 error)
+- Normalise inconsistent data formats.
+- Add OpenAPI docs
+- Add rate limiting / API key
+   
 
 ## Problems solved 🎯
 
-I often find myself browsing recipe websites to cook something new, but struggle to ever find those recipes again later. This API extracts structured recipe data from any recipe webpage, enabling the creation of a recipe index app that saves essential recipe information in one centralized place for easy access and organization.
-
-APP: 'Recipe Index' - Coming soon!
+Recipe sites make it hard to save and re-find recipes. This API helps extract and centralize recipes for easier indexing — the backbone for the upcoming Recipe Index App. Coming soon!
 
