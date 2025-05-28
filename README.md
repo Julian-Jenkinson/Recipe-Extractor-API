@@ -5,14 +5,10 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 
 ## Features 💥
 
-- Supports JSON-LD and Microdata schema.org formats
-
-- Robust fallback parsing for varied website structures
-
-- Easy to integrate into other projects or use as a standalone tool
-
-- Supported for both GET and POST methods
-
+- Supports JSON-LD and Microdata (schema.org)
+- Fallback parsing for varied website structures
+- GET and POST Support
+- Easy integration into other projects
 
 ## Technology ✨ 
 
