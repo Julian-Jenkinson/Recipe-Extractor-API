@@ -106,11 +106,9 @@ The request is missing the required url field.
 
 _Ensure that the url is provided either as a query parameter (GET) or in the JSON body (POST)._
 
-**422 Unprocessable Entity – "No recipe data found in JSON-LD or Microdata"**
-
-The page was successfully fetched, but no structured recipe data was found in supported formats.
-
-_This may occur if the recipe is embedded in an unsupported structure or obfuscated format._
+**422 Unprocessable Entity – "No recipe data found in JSON-LD or Microdata"**  
+The page was successfully fetched, but no structured recipe data was found in supported formats.  
+_This may occur if the recipe is embedded in an unsupported structure or obfuscated format._  
 
 
 ## Local development 🧑‍🏭
