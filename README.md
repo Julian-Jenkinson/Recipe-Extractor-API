@@ -10,6 +10,12 @@ A REST API that extracts recipe details (title, ingredients, instructions, image
 - GET and POST Support
 - Easy integration into other projects
 
+
+## Problems solved 🎯
+
+Recipe sites make it hard to save and re-find recipes. This API helps extract and centralize recipes for easier indexing — the backbone for the upcoming Recipe Index App. Coming soon!
+
+
 ## Technology ✨ 
 
 **Backend** - TypeScript, Node.JS, Express, Axios, Cheerio
@@ -114,9 +120,3 @@ Tests checks:
 - Normalise inconsistent data formats.
 - Add OpenAPI docs
 - Add rate limiting / API key
-   
-
-## Problems solved 🎯
-
-Recipe sites make it hard to save and re-find recipes. This API helps extract and centralize recipes for easier indexing — the backbone for the upcoming Recipe Index App. Coming soon!
-
