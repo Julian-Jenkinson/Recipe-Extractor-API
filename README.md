@@ -67,6 +67,14 @@ Sample Response:
   "ingredients": ["1 tbsp oil", "500g chicken", "..."],
   "instructions": ["Heat oil in a pan", "Add chicken", "..."],
   "image": "https://www.example.com/image.jpg"
+  "source":	"bbcgoodfood.com"
+  "category":	"Dinner, Main course"
+  "notes":	[]
+  "difficulty":	""
+  "cookTime":	"50"
+  "prepTime":	"15"
+  "servingSize":	"10"
+  "favourite":	false
 }
 ```
 
@@ -91,8 +99,8 @@ fly logs            # View logs (past 24 hours only)
 
  This project uses Jest for testing the recipe extraction functionality across a variety of real-world recipe websites.
 
-- ✅ **18 passed** — Full data extracted
-- ⚠️ **1 failed due** Server blocked request (403)
+- ✅ **17 passed** — Full data extracted
+- ⚠️ **2 failed due** Server blocked request (403)
 - ⚠️ **1 failed due** Partial data (missing instructions)
 
 Run tests:
