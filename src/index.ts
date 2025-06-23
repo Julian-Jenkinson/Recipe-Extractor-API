@@ -19,9 +19,19 @@ export interface Recipe {
 
 function normalizeImage(image: any): string | undefined {
   if (!image) return undefined;
-  if (typeof image === "string") return image.trim();
-  if (Array.isArray(image)) return normalizeImage(image[0]);
-  if (typeof image === "object" && image.url) return normalizeImage(image.url);
+  if (typeof image === "string") {
+    const trimmed = image.trim();
+    if (trimmed.startsWith("//")) {
+      return "https:" + trimmed; // fix protocol-relative URL
+    }
+    return trimmed;
+  }
+  if (Array.isArray(image)) {
+    return normalizeImage(image[0]);
+  }
+  if (typeof image === "object" && image.url) {
+    return normalizeImage(image.url);
+  }
   return undefined;
 }
 
