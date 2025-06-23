@@ -1,6 +1,6 @@
 # Recipe-Extractor-API
 
-A REST API that extracts recipe details (title, ingredients, instructions, images) from any recipe webpage URL and returns the data in JSON format.
+A REST API that extracts recipe details (title, ingredients, instructions, images, ... ) from any recipe webpage URL and returns the data in JSON format.
 
 
 ## Features 💥
