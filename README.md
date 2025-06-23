@@ -117,14 +117,22 @@ npm test
 
 Tests checks:
 
-- A non-empty title
-- Ingredient array with content
-- Instructions (string or array)
-- Image URL
+- A non-empty title (string)
+- A non-empty ingredients (array of non-empty strings)
+- A non-empty instructions (array of non-empty strings)
+- A valid image URL (string, may be empty)
+- A favourite field set to false (boolean)
+- A source field (string derived from the URL's hostname)
+- A prepTime (string, may be empty) 
+- A cookTime (string, may be empty)
+- A difficulty field (string, may be empty)
+- A servingSize field (string, may be empty)
+- A notes array (array of strings, may be empty)
+- A category field (string, may be empty)
  
 
 ## Improvments 🤔 
 - Handle bot blocking websites more gracfully (resolve 403 error)
-- Normalise inconsistent data formats.
+- Normalise inconsistent data formats. (difficulty, notes, prep time, cook time, category)
 - Add OpenAPI docs
 - Add rate limiting / API key

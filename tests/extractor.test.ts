@@ -89,6 +89,7 @@ describe('extractRecipe (successful cases)', () => {
 
       // Category (optional string)
       expect(typeof recipe.category).toBe("string");
+      
     });
   });
 });
