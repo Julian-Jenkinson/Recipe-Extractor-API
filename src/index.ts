@@ -3,6 +3,7 @@ import * as cheerio from "cheerio";
 
 export interface Recipe {
   title: string;
+  //description: string;
   ingredients: string[];
   instructions: string[];
   image: string;
@@ -475,6 +476,7 @@ export async function extractRecipe(url: string): Promise<Recipe> {
 
   return {
     title,
+    //description,
     ingredients,
     instructions,
     image,
