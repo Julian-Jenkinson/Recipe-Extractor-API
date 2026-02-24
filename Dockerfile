@@ -1,45 +1,41 @@
-# syntax = docker/dockerfile:1
+# syntax=docker/dockerfile:1.7
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=23.11.0
-FROM node:${NODE_VERSION}-slim AS base
+ARG NODE_VERSION=20.19.5
 
-LABEL fly_launch_runtime="Node.js"
-
-# Node.js app lives here
+FROM node:${NODE_VERSION}-alpine AS base
 WORKDIR /app
+ENV NODE_ENV=production \
+    NPM_CONFIG_UPDATE_NOTIFIER=false \
+    NPM_CONFIG_FUND=false \
+    NPM_CONFIG_AUDIT=false
 
-# Set production environment
-ENV NODE_ENV="production"
+FROM base AS deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --include=dev
 
-
-# Throw-away build stage to reduce size of final image
-FROM base AS build
-
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
-
-# Install node modules
-COPY package-lock.json package.json ./
-RUN npm ci --include=dev
-
-# Copy application code
-COPY . .
-
-# Build application
+FROM deps AS build
+COPY tsconfig.json ./
+COPY src ./src
 RUN npm run build
 
-# Remove development dependencies
-RUN npm prune --omit=dev
+FROM base AS prod-deps
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev --ignore-scripts
 
+FROM node:${NODE_VERSION}-alpine AS runner
+LABEL org.opencontainers.image.title="recipe-extractor-api"
+LABEL org.opencontainers.image.description="Recipe extraction API"
+LABEL org.opencontainers.image.source="https://github.com/Julian-Jenkinson/Recipe-Extractor-API"
 
-# Final stage for app image
-FROM base
+WORKDIR /app
+ENV NODE_ENV=production \
+    PORT=3000
 
-# Copy built application
-COPY --from=build /app /app
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY server.js package.json ./
 
-# Start the server by default, this can be overwritten at runtime
+# Use the bundled non-root user from the Node base image.
+USER node
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD ["node", "server.js"]

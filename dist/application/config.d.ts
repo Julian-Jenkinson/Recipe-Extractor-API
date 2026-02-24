@@ -1,0 +1,14 @@
+export declare const MAX_URL_LENGTH = 2048;
+export declare const MAX_REDIRECTS = 5;
+export declare const FETCH_TIMEOUT_MS = 8000;
+export declare const MAX_HTML_BYTES: number;
+export declare const MAX_FETCH_RETRIES = 2;
+export declare const RETRY_BASE_DELAY_MS = 200;
+export declare const MAX_JSON_LD_SCRIPT_BYTES: number;
+export declare const CACHE_TTL_MS: number;
+export declare const CACHE_MAX_ENTRIES: number;
+export declare const NEGATIVE_CACHE_TTL_MS: number;
+export declare const NEGATIVE_CACHE_MAX_ENTRIES: number;
+export declare const DOMAIN_BLOCK_COOLDOWN_MS: number;
+export declare const DOMAIN_BLOCK_CONSECUTIVE_403_THRESHOLD: number;
+export declare const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";

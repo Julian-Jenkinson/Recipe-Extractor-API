@@ -2,6 +2,27 @@
 
 A REST API that extracts recipe details (title, ingredients, instructions, images, ... ) from any recipe webpage URL and returns the data in JSON format.
 
+## Quick Start (Docker)
+
+Build:
+```
+docker build -t recipe-extractor-api:prod .
+```
+
+Run:
+```
+docker run --rm -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e CORS_ORIGINS=https://your-frontend.example \
+  recipe-extractor-api:prod
+```
+
+Smoke test:
+```
+curl http://localhost:3000/health
+curl "http://localhost:3000/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+```
+
 
 ## Features 💥
 
@@ -40,6 +61,22 @@ curl -X POST https://recipe-extractor-api.fly.dev/extract \
   -H "Content-Type: application/json" \
   -d '{"url": "https://www.example.com/recipe"}'
 ```
+
+Debug mode (adds `_debug` diagnostics to success/error responses):
+
+GET:
+```
+curl "http://localhost:3000/extract?url=https://www.kitchensanctuary.com/peppercorn-sauce/&debug=1"
+```
+
+POST:
+```
+curl -X POST http://localhost:3000/extract \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://www.kitchensanctuary.com/peppercorn-sauce/","debug":true}'
+```
+
+Note: `debug` must be its own query parameter (`&debug=1`), not part of the `url` value.
 
 Request Body:
 ```
@@ -101,35 +138,79 @@ npm run deploy      # Deploy build to fly.io
 fly logs            # View logs (past 24 hours only)
 ```
 
+Health check endpoint:
+```
+curl http://localhost:3000/health
+```
+
+## Environment Variables
+
+Runtime variables:
+
+- `PORT` (default: `3000`)
+- `CORS_ORIGINS` comma-separated allowlist (example: `https://app.example.com,https://admin.example.com`)
+- `TRUST_PROXY_HOPS` (default: `1`)
+- `RATE_LIMIT_WINDOW_MS` (default: `60000`)
+- `RATE_LIMIT_MAX_REQUESTS` (default: `30`)
+- `EXTRACTION_CACHE_TTL_MS` (default: `60000`)
+- `EXTRACTION_CACHE_MAX_ENTRIES` (default: `500`)
+
+## Docker (Production)
+
+Build image:
+```
+docker build -t recipe-extractor-api:prod .
+```
+
+Run container:
+```
+docker run --rm -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e CORS_ORIGINS=https://your-frontend.example \
+  recipe-extractor-api:prod
+```
+
+Smoke checks:
+```
+curl http://localhost:3000/health
+curl "http://localhost:3000/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+```
+
+Container hardening currently in place:
+
+- Multi-stage Docker build
+- Minimal Alpine runtime stage
+- Non-root container user (`node`)
+- Build cache optimization (`npm ci` layers and npm cache mount)
+- Reduced build context via `.dockerignore`
+
+## Fly.io Deployment Checklist
+
+1. Set required secrets and env values (`fly secrets set ...` as needed).
+2. Confirm health endpoint responds: `/health`.
+3. Deploy: `fly deploy`.
+4. Verify status and logs:
+   - `fly status`
+   - `fly logs`
+
+Fly tuning guide:
+- `docs/fly_optimizations.md`
 
 ## Testing ⭐
 
- This project uses Jest for testing the recipe extraction functionality across a variety of real-world recipe websites.
+This project uses Jest with feature-organized suites:
 
-- ✅ **17 passed** — Full data extracted
-- ⚠️ **2 failed due** Server blocked request (403)
-- ⚠️ **1 failed due** Partial data (missing instructions)
+- Unit tests: URL validation, normalizers, retry/failure handling
+- Integration tests: end-to-end extraction flow with simulated upstream responses
+- Security tests: SSRF and input safety guards
+- Live web smoke tests: kept but skipped by default to avoid flaky external dependency
 
 Run tests:
 ```
-npm test
+npm test -- --watchman=false
 ```
 
-Tests checks:
-
-- A non-empty title (string)
-- A non-empty ingredients (array of non-empty strings)
-- A non-empty instructions (array of non-empty strings)
-- A valid image URL (string, may be empty)
-- A favourite field set to false (boolean)
-- A source field (string derived from the URL's hostname)
-- A prepTime (string, may be empty) 
-- A cookTime (string, may be empty)
-- A difficulty field (string, may be empty)
-- A servingSize field (string, may be empty)
-- A notes array (array of strings, may be empty)
-- A category field (string, may be empty)
- 
+Coverage target: global 80%+ (statements, branches, functions, lines).
 
 ## Improvments 🤔 
 - Handle bot blocking websites more gracfully (resolve 403 error)
