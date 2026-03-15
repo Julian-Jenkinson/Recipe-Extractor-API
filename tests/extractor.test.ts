@@ -24,6 +24,8 @@ const urls = [
   "https://www.noracooks.com/marinated-tofu/",
   "https://www.kitchensanctuary.com/peppercorn-sauce/",
   "https://smittenkitchen.com/2025/05/eggs-florentine/", // failed to fetch target url
+  "https://everydayfabulousfood.com/2015/04/14/pear-and-almond-tart-with-armagnac/",//recipe data not found
+  "https://www.seriouseats.com/slow-cooker-salsa-verde-chicken-tacos-recipe-11908997",//unexpected responce
 ];
 
 describe.skip('extractRecipe (successful cases) - live web smoke only', () => {
