@@ -1,0 +1,10 @@
+export const SOCIAL_CACHE_TTL_MS = Number(process.env.SOCIAL_CACHE_TTL_MS || 60000);
+export const SOCIAL_CACHE_MAX_ENTRIES = Number(process.env.SOCIAL_CACHE_MAX_ENTRIES || 250);
+export const SOCIAL_RESULT_MIN_CONFIDENCE = Number(process.env.SOCIAL_RESULT_MIN_CONFIDENCE || 0.6);
+export const SOCIAL_FALLBACK_COMMENT_LIMIT = Number(process.env.SOCIAL_FALLBACK_COMMENT_LIMIT || 5);
+export const SOCIAL_YT_DLP_PATH = process.env.YT_DLP_PATH || "yt-dlp";
+export const SOCIAL_YT_DLP_TIMEOUT_MS = Number(process.env.SOCIAL_YT_DLP_TIMEOUT_MS || 15000);
+export const SOCIAL_OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
+export const SOCIAL_OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-5-mini";
+export const SOCIAL_OPENAI_TIMEOUT_MS = Number(process.env.SOCIAL_OPENAI_TIMEOUT_MS || 12000);
+//# sourceMappingURL=config.js.map

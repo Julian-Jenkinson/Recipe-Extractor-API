@@ -62,6 +62,32 @@ curl -X POST https://recipe-extractor-api.fly.dev/extract \
   -d '{"url": "https://www.example.com/recipe"}'
 ```
 
+GET /extract/social
+
+```
+curl "http://localhost:3000/extract/social?url=https://www.tiktok.com/@recipes/video/7473162105810701586&debug=1"
+curl "http://localhost:3000/extract/social?url=https://www.instagram.com/reel/abc123/&debug=1"
+curl "http://localhost:3000/extract/social?url=https://youtube.com/shorts/6UuseD5McGE&debug=1"
+```
+
+POST /extract/social
+
+```
+curl -X POST http://localhost:3000/extract/social \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://www.tiktok.com/@recipes/video/7473162105810701586","debug":true}'
+```
+
+Social extraction is caption-first and currently supports direct TikTok video URLs, direct Instagram post/reel URLs, and direct YouTube video/Shorts URLs:
+
+```
+curl -X POST http://localhost:3000/extract/social \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://www.instagram.com/reel/abc123/","debug":true}'
+```
+
+Social extraction uses local `yt-dlp` and currently only reads caption/basic metadata from direct TikTok and Instagram post URLs.
+
 Debug mode (adds `_debug` diagnostics to success/error responses):
 
 GET:
@@ -131,6 +157,13 @@ Sample Response:
 
 ## Local development 🧑‍🏭
 
+Create a local env file first:
+```
+cp .env.example .env
+```
+
+Then fill in the values you need. `server.js` loads `.env` automatically at startup.
+
 ```
 npm run build       # Convert TS to JS 
 npm start           # Start local server
@@ -145,6 +178,12 @@ curl http://localhost:3000/health
 
 ## Environment Variables
 
+Local `.env` support:
+
+- Copy `.env.example` to `.env`
+- `.env` is ignored by git
+- Values from `.env` are loaded automatically when `server.js` starts
+
 Runtime variables:
 
 - `PORT` (default: `3000`)
@@ -154,6 +193,9 @@ Runtime variables:
 - `RATE_LIMIT_MAX_REQUESTS` (default: `30`)
 - `EXTRACTION_CACHE_TTL_MS` (default: `60000`)
 - `EXTRACTION_CACHE_MAX_ENTRIES` (default: `500`)
+- `YT_DLP_PATH` optional path override for the local `yt-dlp` binary
+- `OPENAI_API_KEY` required for `/extract/social`
+- `OPENAI_MODEL` (default: `gpt-5-mini`)
 
 ## Docker (Production)
 

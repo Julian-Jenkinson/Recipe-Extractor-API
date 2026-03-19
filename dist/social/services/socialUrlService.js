@@ -1,0 +1,75 @@
+import { RecipeExtractionError } from "../../domain/errors.js";
+const PLATFORM_HOSTS = {
+    instagram: ["instagram.com"],
+    tiktok: ["tiktok.com", "tiktokv.com"],
+    youtube: ["youtube.com", "youtu.be"],
+};
+export class SocialUrlService {
+    constructor(urlGuard) {
+        this.urlGuard = urlGuard;
+    }
+    validateAndNormalize(inputUrl) {
+        const url = this.urlGuard.validateAndNormalizeUrl(inputUrl);
+        const hostname = url.hostname.toLowerCase();
+        const platform = this.detectPlatform(hostname);
+        if (!platform) {
+            throw new RecipeExtractionError(400, "Only Instagram, TikTok, and YouTube URLs are supported for social extraction");
+        }
+        url.hash = "";
+        // Shared links often include tracking params that are not useful for caching.
+        for (const key of [...url.searchParams.keys()]) {
+            url.searchParams.delete(key);
+        }
+        this.validatePlatformPath(url, platform);
+        return {
+            url,
+            platform,
+            cacheKey: `${platform}:${url.toString()}`,
+        };
+    }
+    detectPlatform(hostname) {
+        for (const [platform, allowedHosts] of Object.entries(PLATFORM_HOSTS)) {
+            if (allowedHosts.some((baseHost) => hostname === baseHost || hostname.endsWith(`.${baseHost}`))) {
+                return platform;
+            }
+        }
+        return null;
+    }
+    validatePlatformPath(url, platform) {
+        if (platform === "instagram") {
+            if (!/^\/(reel|p)\/[^/]+/.test(url.pathname)) {
+                throw new RecipeExtractionError(400, "Instagram extraction requires a direct post or reel URL", {
+                    platform,
+                    failurePhase: "validate",
+                });
+            }
+            return;
+        }
+        if (platform === "tiktok" && !/^\/@[^/]+\/video\/[^/]+/.test(url.pathname)) {
+            throw new RecipeExtractionError(400, "TikTok extraction requires a direct video URL", {
+                platform,
+                failurePhase: "validate",
+            });
+        }
+        if (platform === "youtube") {
+            if (url.hostname.endsWith("youtu.be")) {
+                if (!/^\/[^/]+/.test(url.pathname)) {
+                    throw new RecipeExtractionError(400, "YouTube extraction requires a direct video or Shorts URL", {
+                        platform,
+                        failurePhase: "validate",
+                    });
+                }
+                return;
+            }
+            const isShorts = /^\/shorts\/[^/]+/.test(url.pathname);
+            const isWatch = url.pathname === "/watch" && !!url.searchParams.get("v");
+            if (!isShorts && !isWatch) {
+                throw new RecipeExtractionError(400, "YouTube extraction requires a direct video or Shorts URL", {
+                    platform,
+                    failurePhase: "validate",
+                });
+            }
+        }
+    }
+}
+//# sourceMappingURL=socialUrlService.js.map

@@ -1,8 +1,22 @@
-// server.js
 import express from "express";
 import cors from "cors";
-import { extractRecipe, extractRecipeWithDiagnostics, RecipeExtractionError } from "./dist/index.js";
 import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+try {
+  process.loadEnvFile(resolve(__dirname, ".env"));
+} catch {}
+
+const {
+  extractRecipe,
+  extractRecipeWithDiagnostics,
+  extractSocialRecipe,
+  extractSocialRecipeWithDiagnostics,
+  RecipeExtractionError,
+} = await import("./dist/index.js");
 
 const PORT = process.env.PORT || 3000;
 const TRUST_PROXY_HOPS = Number(process.env.TRUST_PROXY_HOPS || 1);
@@ -80,7 +94,20 @@ function isDebugRequested(req) {
   return candidate === true || candidate === 1;
 }
 
-export function createApp(extractor = extractRecipe, extractorWithDiagnostics = extractRecipeWithDiagnostics) {
+function getScraperPreference(req) {
+  const candidate = req.method === "GET" ? req.query?.scraper : req.body?.scraper;
+  if (candidate === "ytdlp" || candidate === "auto") {
+    return candidate;
+  }
+  return "auto";
+}
+
+export function createApp(
+  extractor = extractRecipe,
+  extractorWithDiagnostics = extractRecipeWithDiagnostics,
+  socialExtractor = extractSocialRecipe,
+  socialExtractorWithDiagnostics = extractSocialRecipeWithDiagnostics
+) {
   const app = express();
   app.set("trust proxy", TRUST_PROXY_HOPS);
   app.disable("x-powered-by");
@@ -153,6 +180,45 @@ export function createApp(extractor = extractRecipe, extractorWithDiagnostics = 
         return;
       }
       const recipe = await extractor(url);
+      res.json(recipe);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post("/extract/social", async (req, res, next) => {
+    try {
+      if (!req.is("application/json")) {
+        throw new RecipeExtractionError(415, "Content-Type must be application/json");
+      }
+      const url = getValidatedUrl(req);
+      const options = {
+        scraper: getScraperPreference(req),
+      };
+      if (isDebugRequested(req)) {
+        const result = await socialExtractorWithDiagnostics(url, options);
+        res.json({ ...result.recipe, _debug: result.diagnostics });
+        return;
+      }
+      const recipe = await socialExtractor(url, options);
+      res.json(recipe);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get("/extract/social", async (req, res, next) => {
+    try {
+      const url = getValidatedUrl(req);
+      const options = {
+        scraper: getScraperPreference(req),
+      };
+      if (isDebugRequested(req)) {
+        const result = await socialExtractorWithDiagnostics(url, options);
+        res.json({ ...result.recipe, _debug: result.diagnostics });
+        return;
+      }
+      const recipe = await socialExtractor(url, options);
       res.json(recipe);
     } catch (error) {
       next(error);

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">15.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/89</span>
+                <span class='fraction'>14/93</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">15.21% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/88</span>
+                <span class='fraction'>14/92</span>
             </div>
         
             
@@ -280,9 +280,11 @@
 <a name='L215'></a><a href='#L215'>215</a>
 <a name='L216'></a><a href='#L216'>216</a>
 <a name='L217'></a><a href='#L217'>217</a>
-<a name='L218'></a><a href='#L218'>218</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L218'></a><a href='#L218'>218</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -306,21 +308,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -466,9 +466,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">32x</span>
+<span class="cline-any cline-yes">32x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -526,15 +526,15 @@ export type ExtractionDiagnostics = {
 };
 &nbsp;
 export class RecipeExtractorService {
-  private readonly <span class="cstat-no" title="statement not covered" >blockedDomains = new Map&lt;string, number&gt;();</span>
-  private readonly <span class="cstat-no" title="statement not covered" >domain403Counts = new Map&lt;string, number&gt;();</span>
+  private readonly blockedDomains = new Map&lt;string, number&gt;();
+  private readonly domain403Counts = new Map&lt;string, number&gt;();
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor(</span>
-    private readonly <span class="cstat-no" title="statement not covered" >urlGuard: UrlGuardService,</span>
-    private readonly <span class="cstat-no" title="statement not covered" >htmlFetcher: HtmlFetchService,</span>
-    private readonly <span class="cstat-no" title="statement not covered" >parser: RecipeParserService,</span>
-    private readonly <span class="cstat-no" title="statement not covered" >cache: TtlCache&lt;Recipe&gt;,</span>
-    private readonly <span class="cstat-no" title="statement not covered" >negativeCache: TtlCache&lt;NegativeCacheEntry&gt;</span>
+  constructor(
+    private readonly urlGuard: UrlGuardService,
+    private readonly htmlFetcher: HtmlFetchService,
+    private readonly parser: RecipeParserService,
+    private readonly cache: TtlCache&lt;Recipe&gt;,
+    private readonly negativeCache: TtlCache&lt;NegativeCacheEntry&gt;
   ) {}
 &nbsp;
 <span class="fstat-no" title="function not covered" >  async </span>extractRecipe(inputUrl: string): Promise&lt;Recipe&gt; {
@@ -682,10 +682,10 @@ export class RecipeExtractorService {
 <span class="cstat-no" title="statement not covered" >    return { recipe, diagnostics };</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  clearRuntimeState(</span>): void {
-<span class="cstat-no" title="statement not covered" >    this.blockedDomains.clear();</span>
-<span class="cstat-no" title="statement not covered" >    this.domain403Counts.clear();</span>
-<span class="cstat-no" title="statement not covered" >    this.negativeCache.clear();</span>
+  clearRuntimeState(): void {
+    this.blockedDomains.clear();
+    this.domain403Counts.clear();
+    this.negativeCache.clear();
   }
 &nbsp;
   private <span class="fstat-no" title="function not covered" >memoizeFailure(</span>cacheKey: string, domainKey: string, error: RecipeExtractionError): void {
@@ -721,7 +721,7 @@ export class RecipeExtractorService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-25T03:24:52.801Z
+                at 2026-03-19T23:48:22.084Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

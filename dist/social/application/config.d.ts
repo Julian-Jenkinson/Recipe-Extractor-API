@@ -1,0 +1,9 @@
+export declare const SOCIAL_CACHE_TTL_MS: number;
+export declare const SOCIAL_CACHE_MAX_ENTRIES: number;
+export declare const SOCIAL_RESULT_MIN_CONFIDENCE: number;
+export declare const SOCIAL_FALLBACK_COMMENT_LIMIT: number;
+export declare const SOCIAL_YT_DLP_PATH: string;
+export declare const SOCIAL_YT_DLP_TIMEOUT_MS: number;
+export declare const SOCIAL_OPENAI_API_KEY: string;
+export declare const SOCIAL_OPENAI_MODEL: string;
+export declare const SOCIAL_OPENAI_TIMEOUT_MS: number;
