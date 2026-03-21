@@ -187,6 +187,7 @@ Local `.env` support:
 Runtime variables:
 
 - `PORT` (default: `3000`)
+- `APP_API_KEY` optional shared key for protecting `/extract` and `/extract/social` via the `x-app-key` header
 - `CORS_ORIGINS` comma-separated allowlist (example: `https://app.example.com,https://admin.example.com`)
 - `TRUST_PROXY_HOPS` (default: `1`)
 - `RATE_LIMIT_WINDOW_MS` (default: `60000`)
@@ -215,7 +216,17 @@ docker run --rm -p 3000:3000 \
 Smoke checks:
 ```
 curl http://localhost:3000/health
-curl "http://localhost:3000/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+curl -H "x-app-key: your-app-key" "http://localhost:3000/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
+```
+
+When `APP_API_KEY` is set, clients must send:
+```
+x-app-key: <your key>
+```
+
+Fly secrets example:
+```
+fly secrets set APP_API_KEY=your-long-random-key
 ```
 
 Container hardening currently in place:

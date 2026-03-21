@@ -19,6 +19,7 @@ const {
 } = await import("./dist/index.js");
 
 const PORT = process.env.PORT || 3000;
+const APP_API_KEY = process.env.APP_API_KEY || "";
 const TRUST_PROXY_HOPS = Number(process.env.TRUST_PROXY_HOPS || 1);
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 30);
@@ -102,6 +103,21 @@ function getScraperPreference(req) {
   return "auto";
 }
 
+function requireAppApiKey(req, _res, next) {
+  if (!APP_API_KEY) {
+    next();
+    return;
+  }
+
+  const candidate = req.get("x-app-key");
+  if (typeof candidate !== "string" || candidate.trim() !== APP_API_KEY) {
+    next(new RecipeExtractionError(401, "Invalid or missing app API key"));
+    return;
+  }
+
+  next();
+}
+
 export function createApp(
   extractor = extractRecipe,
   extractorWithDiagnostics = extractRecipeWithDiagnostics,
@@ -136,7 +152,7 @@ export function createApp(
       callback(new RecipeExtractionError(403, "Origin is not allowed"));
     },
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "x-app-key"],
     maxAge: 600,
     credentials: false,
   };
@@ -150,6 +166,7 @@ export function createApp(
   });
 
   app.use(rateLimit);
+  app.use(["/extract", "/extract/social"], requireAppApiKey);
 
   // GET version
   app.get("/extract", async (req, res, next) => {
