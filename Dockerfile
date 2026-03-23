@@ -31,6 +31,9 @@ WORKDIR /app
 ENV NODE_ENV=production \
     PORT=3000
 
+RUN apk add --no-cache python3 py3-pip \
+ && pip3 install --no-cache-dir --break-system-packages yt-dlp
+
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY server.js package.json ./

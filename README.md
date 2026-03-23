@@ -86,7 +86,7 @@ curl -X POST http://localhost:3000/extract/social \
   -d '{"url":"https://www.instagram.com/reel/abc123/","debug":true}'
 ```
 
-Social extraction uses local `yt-dlp` and currently only reads caption/basic metadata from direct TikTok and Instagram post URLs.
+Social extraction uses local `yt-dlp` and currently only reads caption/basic metadata from direct TikTok and Instagram post URLs. The production Docker image installs `yt-dlp`, so `YT_DLP_PATH` is only needed when you want to override the binary location.
 
 Debug mode (adds `_debug` diagnostics to success/error responses):
 
@@ -188,6 +188,11 @@ Runtime variables:
 
 - `PORT` (default: `3000`)
 - `APP_API_KEY` optional shared key for protecting `/extract` and `/extract/social` via the `x-app-key` header
+- `APP_API_KEY_MODE` controls rollout for `APP_API_KEY`:
+  - `off`: key is optional, no auth warning logs
+  - `warn`: key is optional, but requests without a valid key are logged
+  - `on`: key is required and invalid or missing keys return `401`
+  - default behavior: `on` when `APP_API_KEY` is set, otherwise `off`
 - `CORS_ORIGINS` comma-separated allowlist (example: `https://app.example.com,https://admin.example.com`)
 - `TRUST_PROXY_HOPS` (default: `1`)
 - `RATE_LIMIT_WINDOW_MS` (default: `60000`)
@@ -219,10 +224,12 @@ curl http://localhost:3000/health
 curl -H "x-app-key: your-app-key" "http://localhost:3000/extract?url=https://www.bbcgoodfood.com/recipes/chicken-tikka-masala"
 ```
 
-When `APP_API_KEY` is set, clients must send:
+When `APP_API_KEY_MODE=on` and `APP_API_KEY` is set, clients must send:
 ```
 x-app-key: <your key>
 ```
+
+When `APP_API_KEY_MODE=warn`, requests still succeed without the header, but the server logs a warning with request metadata so you can measure legacy traffic before enforcing the key.
 
 Fly secrets example:
 ```

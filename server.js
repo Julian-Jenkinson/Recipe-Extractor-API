@@ -17,9 +17,11 @@ const {
   extractSocialRecipeWithDiagnostics,
   RecipeExtractionError,
 } = await import("./dist/index.js");
+const { evaluateAppApiKey, resolveAppApiKeyConfig } = await import("./dist/application/appApiKeyAuth.js");
 
 const PORT = process.env.PORT || 3000;
 const APP_API_KEY = process.env.APP_API_KEY || "";
+const APP_API_KEY_MODE = process.env.APP_API_KEY_MODE || "";
 const TRUST_PROXY_HOPS = Number(process.env.TRUST_PROXY_HOPS || 1);
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 30);
@@ -103,28 +105,41 @@ function getScraperPreference(req) {
   return "auto";
 }
 
-function requireAppApiKey(req, _res, next) {
-  if (!APP_API_KEY) {
-    next();
-    return;
-  }
+function createAppApiKeyMiddleware({ appApiKey = APP_API_KEY, appApiKeyMode = APP_API_KEY_MODE, logger = console } = {}) {
+  const authConfig = resolveAppApiKeyConfig({ appApiKey, appApiKeyMode });
 
-  const candidate = req.get("x-app-key");
-  if (typeof candidate !== "string" || candidate.trim() !== APP_API_KEY) {
+  return function requireAppApiKey(req, _res, next) {
+    const result = evaluateAppApiKey(authConfig, req.get("x-app-key"));
+    if (result.allow && !result.shouldWarn) {
+      next();
+      return;
+    }
+
+    if (result.shouldWarn) {
+      logger.warn?.("[auth] Legacy request without valid x-app-key", {
+        path: req.path,
+        method: req.method,
+        ip: req.ip,
+        origin: req.get("origin") || "",
+        userAgent: req.get("user-agent") || "",
+      });
+      next();
+      return;
+    }
+
     next(new RecipeExtractionError(401, "Invalid or missing app API key"));
-    return;
-  }
-
-  next();
+  };
 }
 
 export function createApp(
   extractor = extractRecipe,
   extractorWithDiagnostics = extractRecipeWithDiagnostics,
   socialExtractor = extractSocialRecipe,
-  socialExtractorWithDiagnostics = extractSocialRecipeWithDiagnostics
+  socialExtractorWithDiagnostics = extractSocialRecipeWithDiagnostics,
+  options = {}
 ) {
   const app = express();
+  const requireAppApiKey = createAppApiKeyMiddleware(options);
   app.set("trust proxy", TRUST_PROXY_HOPS);
   app.disable("x-powered-by");
 
