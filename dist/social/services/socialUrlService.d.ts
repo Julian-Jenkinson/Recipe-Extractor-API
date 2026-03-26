@@ -10,4 +10,5 @@ export declare class SocialUrlService {
     };
     private detectPlatform;
     private validatePlatformPath;
+    private stripNonCanonicalParams;
 }

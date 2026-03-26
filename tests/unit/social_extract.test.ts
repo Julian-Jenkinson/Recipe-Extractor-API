@@ -62,6 +62,16 @@ describe("unit/social extraction", () => {
     expect(result.cacheKey).toBe("youtube:https://youtube.com/shorts/6UuseD5McGE");
   });
 
+  test("validates and canonicalizes YouTube watch URLs", () => {
+    const result = __testUtils.validateAndNormalizeSocialUrl(
+      "https://www.youtube.com/watch?v=VEm6JvwXhbY&si=abc123#fragment"
+    );
+
+    expect(result.platform).toBe("youtube");
+    expect(result.url.toString()).toBe("https://www.youtube.com/watch?v=VEm6JvwXhbY");
+    expect(result.cacheKey).toBe("youtube:https://www.youtube.com/watch?v=VEm6JvwXhbY");
+  });
+
   test("rejects TikTok URLs that are not direct video links", async () => {
     await expect(extractSocialRecipe("https://www.tiktok.com/@cook")).rejects.toMatchObject({
       statusCode: 400,

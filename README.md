@@ -66,8 +66,12 @@ GET /extract/social
 
 ```
 curl "http://localhost:3000/extract/social?url=https://www.tiktok.com/@recipes/video/7473162105810701586&debug=1"
-curl "http://localhost:3000/extract/social?url=https://www.instagram.com/reel/abc123/&debug=1"
-curl "http://localhost:3000/extract/social?url=https://youtube.com/shorts/6UuseD5McGE&debug=1"
+curl "http://localhost:3000/extract/social?url=https://www.instagram.com/p/DV17Q6Fk6xS/&debug=1"
+curl "http://localhost:3000/extract/social?url=https://www.youtube.com/watch?v=VEm6JvwXhbY&debug=1"
+
+curl -H "x-app-key: YOUR_APP_API_KEY" \
+  "https://recipe-extractor-api.fly.dev/extract/social?url=https://www.youtube.com/watch?v=VEm6JvwXhbY"
+
 ```
 
 POST /extract/social

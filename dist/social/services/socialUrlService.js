@@ -16,11 +16,8 @@ export class SocialUrlService {
             throw new RecipeExtractionError(400, "Only Instagram, TikTok, and YouTube URLs are supported for social extraction");
         }
         url.hash = "";
-        // Shared links often include tracking params that are not useful for caching.
-        for (const key of [...url.searchParams.keys()]) {
-            url.searchParams.delete(key);
-        }
         this.validatePlatformPath(url, platform);
+        this.stripNonCanonicalParams(url, platform);
         return {
             url,
             platform,
@@ -70,6 +67,18 @@ export class SocialUrlService {
                 });
             }
         }
+    }
+    stripNonCanonicalParams(url, platform) {
+        if (platform === "youtube" && url.pathname === "/watch") {
+            const videoId = url.searchParams.get("v");
+            url.search = "";
+            if (videoId) {
+                url.searchParams.set("v", videoId);
+            }
+            return;
+        }
+        // Shared links often include tracking params that are not useful for caching.
+        url.search = "";
     }
 }
 //# sourceMappingURL=socialUrlService.js.map

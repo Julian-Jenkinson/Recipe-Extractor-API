@@ -22,12 +22,8 @@ export class SocialUrlService {
 
     url.hash = "";
 
-    // Shared links often include tracking params that are not useful for caching.
-    for (const key of [...url.searchParams.keys()]) {
-      url.searchParams.delete(key);
-    }
-
     this.validatePlatformPath(url, platform);
+    this.stripNonCanonicalParams(url, platform);
 
     return {
       url,
@@ -84,5 +80,19 @@ export class SocialUrlService {
         });
       }
     }
+  }
+
+  private stripNonCanonicalParams(url: URL, platform: SocialPlatform): void {
+    if (platform === "youtube" && url.pathname === "/watch") {
+      const videoId = url.searchParams.get("v");
+      url.search = "";
+      if (videoId) {
+        url.searchParams.set("v", videoId);
+      }
+      return;
+    }
+
+    // Shared links often include tracking params that are not useful for caching.
+    url.search = "";
   }
 }
