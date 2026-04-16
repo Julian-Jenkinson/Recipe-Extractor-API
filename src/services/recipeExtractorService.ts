@@ -161,11 +161,20 @@ export class RecipeExtractorService {
 
     let recipe: Recipe;
     try {
-      const source = finalUrl.hostname.replace(/^www\./, "");
+      const source = finalUrl.hostname.replace(/^www\./, ""); // keep this
+      const fullUrl = finalUrl.href; // add this
+      
+
       const parsed = this.parser.parseWithDiagnostics(html, source);
       recipe = parsed.recipe;
+
+      recipe.source = source;     // ensure consistency
+      recipe.finalUrl = fullUrl;  // <-- THIS is missing
+
       diagnostics.sourceDomain = source;
+      diagnostics.finalUrl = fullUrl; // <-- new addition
       diagnostics.parserPath = parsed.parserPath;
+
     } catch (error) {
       if (error instanceof RecipeExtractionError) {
         const wrapped = new RecipeExtractionError(error.statusCode, error.publicMessage, {

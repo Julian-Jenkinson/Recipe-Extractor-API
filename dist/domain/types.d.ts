@@ -19,6 +19,7 @@ export interface Recipe {
     instructions: string[];
     image: string;
     source: string;
+    finalUrl?: string;
     category: string;
     notes: string[];
     favourite: boolean;
